@@ -10,18 +10,34 @@ public class Main {
                 }
     }
     //QuickSort
-    static void quickSort(int[] a,int l,int r){
-        if(l<r){
-            int p=a[r], i=l-1;
-            for(int j=l;j<r;j++)
-                if(a[j]<=p){i++; int t=a[i]; a[i]=a[j]; a[j]=t;}
-            int t=a[i+1]; a[i+1]=a[r]; a[r]=t;
-            quickSort(a,l,i); quickSort(a,i+2,r);
+    static void quickSort(int[] arr, int left, int right) {
+        if (left < right) {
+
+            int pivot = arr[right];
+            int smallerIndex = left - 1;
+
+            for (int current = left; current < right; current++) {
+                if (arr[current] <= pivot) {
+                    smallerIndex++;
+                    int temp = arr[smallerIndex];
+                    arr[smallerIndex] = arr[current];
+                    arr[current] = temp;
+                }
+            }
+
+            int temp = arr[smallerIndex + 1];
+            arr[smallerIndex + 1] = arr[right];
+            arr[right] = temp;
+
+            int pivotIndex = smallerIndex + 1;
+
+            quickSort(arr, left, pivotIndex - 1);
+            quickSort(arr, pivotIndex + 1, right);
         }
     }
     //FindElement in array
-    static int find(int[] a,int x){
-        for(int i=0;i<a.length;i++) if(a[i]==x) return i;
+    static int find(int[] arrayToLookIn,int elementToLookFor){
+        for(int window=0;window<arrayToLookIn.length;window++) if(arrayToLookIn[window]==elementToLookFor) return window;
         return -1;
     }
     //Palindrome check
