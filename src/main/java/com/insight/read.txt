@@ -1,0 +1,114 @@
+1. JVM, Bytecode, Class
+JVM (Java Virtual Machine): Runs Java bytecode. Converts compiled .class files into machine code. Provides platform independence.
+Bytecode: Intermediate, platform-independent code produced by javac. Executed by JVM.
+Class: Template for objects. Compiled into bytecode.
+Flow: .java → javac → .class (bytecode) → JVM → OS machine code.
+Example:
+class Person {
+    String name;
+}
+Person.class → JVM executes it.
+
+2. Collections Framework
+
+Notes: For thread-safe variants, use Collections.synchronizedX or ConcurrentHashMap.
+
+3. Multithreading
+Thread: Independent path of execution.
+Runnable vs Thread: Runnable implements logic; Thread runs it.
+Race Condition: Two threads modify shared data → inconsistent result.
+Deadlock: Two threads wait on each other’s locks.
+Live Lock: Threads keep running but no progress.
+Locks: synchronized, ReentrantLock.
+Thread Pool: Executors.newFixedThreadPool(n) — reuses threads.
+Thread-safe collections: ConcurrentHashMap, CopyOnWriteArrayList.
+Volatile: Ensures visibility between threads.
+Example:
+ReentrantLock lock = new ReentrantLock();
+lock.lock();
+try { // critical section } finally { lock.unlock(); }
+
+4. Java Primitives and Objects
+Primitives: int, long, boolean, byte, char, double (fast, stored on stack)
+Objects: Reference types, stored on heap, access via reference.
+
+5. Heap and Stack
+Stack: Stores method calls, primitives, references. LIFO. Fast.
+Heap: Stores objects, shared among threads. Garbage-collected.
+Enlarging memory: -Xmx (heap), -Xss (stack per thread)
+Example: int a=5; Object obj=new Object(); → a on stack, obj on heap.
+
+6. Inheritance & Inner Classes
+Inheritance: class B extends A
+Method priority: Child overrides parent → child method called.
+super keyword: Call parent method.
+Inner class: Can access outer class private members.
+Example:
+class A { void foo(){System.out.println("A");} }
+class B extends A { void foo(){System.out.println("B");} }
+A a = new B(); a.foo(); // prints B
+
+7. Spring Framework
+Core Components: IoC Container, Beans, Context, AOP.
+Bean Lifecycle: Instantiate → Populate → Initialize → Destroy.
+ApplicationContext: Central interface, reads bean definitions.
+Reflection: Used for dependency injection.
+IoC: Inversion of Control – container manages object creation.
+DI Example:
+@Component class Service{}
+@Autowired Service s;
+
+8. Java Streams
+Intermediate: map(), filter()
+Terminal: collect(), forEach(), count()
+Example:
+List<String> list = List.of("a","b");
+long c = list.stream().filter(s->s.equals("a")).count();
+
+9. Hibernate & JPA
+JPA: Java standard for ORM.
+Hibernate: Implementation.
+Plusses: Automates SQL, caching, mapping.
+Native queries: Use when performance-critical or complex SQL.
+
+10. Data Classes (Record)
+Immutable containers for data:
+record Person(String name, int age) {}
+
+11. HashCode & Equals
+equals: Logical equality.
+hashCode: Required for hash-based collections.
+Collision: Different objects → same bucket, handled via linked list or tree in Java 8+ HashMap.
+
+12. Collection Internals
+Map: HashMap uses array of buckets + linked lists/tree.
+Set: Uses HashMap internally.
+Queue: PriorityQueue uses heap.
+List: ArrayList backed by array, LinkedList doubly-linked nodes.
+Complexity: Depends on structure (HashMap: read/write O(1), TreeMap O(log n)).
+
+13. Time Complexity Basics
+Best / Worst: Analyze loops and recursion.
+Sigma: Sum over loop iterations, e.g., 1+2+...+n = n(n+1)/2
+
+14. DTO vs Entity
+Entity: Represents DB table.
+DTO: Transfer object for API, reduces coupling.
+Example: Convert entity to DTO before sending to client.
+
+15. Spring API Endpoints
+@RestController
+@RequestMapping("/api")
+class MyController {
+    @GetMapping("/hello")
+    public String hello(){ return "Hi"; }
+}
+Static vs @Annotation: Static – compile-time, no injection; Annotations – container-managed.
+
+16. Custom Annotations & Interfaces
+@Retention(RetentionPolicy.RUNTIME)
+@interface MyAnno {}
+interface MyInt { void run(); }
+class C implements MyInt { public void run(){} }
+Reflection can detect @MyAnno at runtime.
+
